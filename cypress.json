@@ -1,0 +1,6 @@
+{
+    "baseUrl":"https://viewpoint.glasslewis.com/WD/?siteId=DemoClient",
+    "defaultCommandTimeout":15000 ,
+    "viewportWidth": 1600,
+    "viewportHeight": 1200    
+}

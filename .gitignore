@@ -1,0 +1,10 @@
+# Dependency directories
+node_modules/
+
+# Optional npm cache directory
+.npm
+
+# Cypress reports/screenshots/videos
+cypress/screenshots
+cypress/videos
+cypress/reports
