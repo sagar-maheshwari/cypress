@@ -7,4 +7,4 @@ node_modules/
 # Cypress reports/screenshots/videos
 cypress/screenshots
 cypress/videos
-cypress/reports
+cypress/reports/*
