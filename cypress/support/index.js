@@ -19,5 +19,5 @@ import './commands'
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
 
-//allow xpaths to be used for identifying
+//allow xpaths to be used for identifying web elements
 require('cypress-xpath')
