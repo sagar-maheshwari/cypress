@@ -2,7 +2,8 @@ import { Given, When, Then } from '@badeball/cypress-cucumber-preprocessor';
 import loginPage from '../page_objects/login.page';
 
 Given('I am on the login page', () => {
-	cy.visit('/auth/login');
+	cy.visit('/');
+	loginPage.signInLink().click();
 	loginPage.submitButton().should('be.visible');
 });
 

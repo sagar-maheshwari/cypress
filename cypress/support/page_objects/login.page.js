@@ -1,4 +1,8 @@
 class loginPage {
+	signInLink() {
+		return cy.get('[data-test="nav-sign-in"]');
+	}
+
 	emailInput() {
 		return cy.get('[data-test="email"]');
 	}
