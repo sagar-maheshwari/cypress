@@ -1,0 +1,47 @@
+name: Smoke tests
+
+on:
+  workflow_dispatch:
+    inputs:
+      buildParameters:
+        description: 'Command to run'
+        required: false
+        default: 'npm run smoke'
+  pull_request:
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Cypress binary
+        run: npx cypress install
+
+      - name: Run tests
+        run: ${{ inputs.buildParameters || 'npm run smoke' }}
+
+      - name: Upload Cucumber report
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: cucumber-report-${{ github.run_attempt }}
+          path: test-results/cucumber/cucumber_report.html
+          if-no-files-found: ignore
+
+      - name: Upload failure screenshots
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: screenshots-${{ github.run_attempt }}
+          path: test-results/screenshots
+          if-no-files-found: ignore

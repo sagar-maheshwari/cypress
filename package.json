@@ -1,31 +1,51 @@
 {
-  "name": "cypress",
-  "version": "1.0.0",
-  "description": "cypress automation framework",
-  "scripts": {
-    "cypress:open": "cypress open",
-    "cypress:run": "cypress run",
-    "pretest": "npm run clean:reports",
-    "test": "npm run cypress:run || npm run posttest",
-    "posttest": "npm run combine-reports && npm run generate-report",
-    "clean:reports": "rmdir /S /Q cypress\\reports && mkdir cypress\\reports && mkdir cypress\\reports\\mochareports",
-    "combine-reports": "mochawesome-merge cypress/reports/mocha/*.json > cypress/reports/mochareports/report.json",
-    "generate-report": "marge cypress/reports/mochareports/report.json -f report -o cypress/reports/mochareports --inline"
-  },
-  "keywords": [
-    "cypress",
-    "testing"
-  ],
-  "author": "Sagar Maheshwari",
-  "license": "ISC",
-  "devDependencies": {
-    "cypress": "9.4.1",
-    "cypress-multi-reporters": "1.5.0",
-    "cypress-xpath": "1.6.2",
-    "mocha": "9.2.0",
-    "mochawesome": "7.0.1",
-    "mochawesome-merge": "4.2.1",
-    "mochawesome-report-generator": "6.0.1"
-  },
-  "dependencies": {}
+	"name": "cypress",
+	"version": "1.0.0",
+	"description": "Cypress + Cucumber automation for practicesoftwaretesting.com",
+	"license": "ISC",
+	"scripts": {
+		"open": "cypress open --e2e --browser electron",
+		"test": "cypress run",
+		"smoke": "cypress run --expose tags=@smoke",
+		"regression": "cypress run --expose tags=@regression",
+		"lint": "eslint cypress",
+		"prettier": "prettier --write \"**/*.{js,json}\" && git update-index -g",
+		"prepare": "husky"
+	},
+	"cypress-cucumber-preprocessor": {
+		"stepDefinitions": "cypress/support/step_definitions/*.js",
+		"filterSpecs": true,
+		"omitFiltered": true,
+		"messages": {
+			"enabled": true,
+			"output": "test-results/cucumber/cucumber-messages.ndjson"
+		},
+		"html": {
+			"enabled": true,
+			"output": "test-results/cucumber/cucumber_report.html"
+		}
+	},
+	"prettier": {
+		"trailingComma": "es5",
+		"tabWidth": 2,
+		"useTabs": true,
+		"printWidth": 120,
+		"semi": true,
+		"singleQuote": true,
+		"quoteProps": "preserve"
+	},
+	"dependencies": {
+		"@badeball/cypress-cucumber-preprocessor": "28.0.1",
+		"@bahmutov/cypress-esbuild-preprocessor": "2.2.8",
+		"cypress": "16.2.1",
+		"node-stdlib-browser": "1.3.1"
+	},
+	"devDependencies": {
+		"@eslint/js": "10.0.1",
+		"eslint": "10.14.0",
+		"eslint-plugin-cypress": "7.0.2",
+		"globals": "17.14.0",
+		"husky": "9.1.7",
+		"prettier": "3.9.10"
+	}
 }

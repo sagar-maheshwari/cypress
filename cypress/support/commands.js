@@ -1,25 +1,29 @@
-// ***********************************************
-// This example commands.js shows you how to
-// create various custom commands and overwrite
-// existing commands.
-//
-// For more comprehensive examples of custom
-// commands please read more here:
-// https://on.cypress.io/custom-commands
-// ***********************************************
-//
-//
-// -- This is a parent command --
-// Cypress.Commands.add('login', (email, password) => { ... })
-//
-//
-// -- This is a child command --
-// Cypress.Commands.add('drag', { prevSubject: 'element'}, (subject, options) => { ... })
-//
-//
-// -- This is a dual command --
-// Cypress.Commands.add('dismiss', { prevSubject: 'optional'}, (subject, options) => { ... })
-//
-//
-// -- This will overwrite an existing command --
-// Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+const constants = require('./constants');
+
+// Logs in through the API once per user and caches the session (token is kept in localStorage as "auth-token")
+Cypress.Commands.add('loginWithAdmin', (email = constants.USER.admin) => {
+	cy.session(
+		email,
+		() => {
+			cy.request('POST', constants.API.LOGIN, { email, password: constants.PASSWORD }).then((resp) => {
+				expect(resp.status).to.eq(200);
+				window.localStorage.setItem('auth-token', resp.body.access_token);
+			});
+		},
+		{
+			validate: () => {
+				cy.window().its('localStorage').invoke('getItem', 'auth-token').should('exist');
+			},
+		}
+	);
+});
+
+Cypress.Commands.add('getAdminToken', () => {
+	return cy
+		.request('POST', constants.API.LOGIN, { email: constants.USER.admin, password: constants.PASSWORD })
+		.then((resp) => resp.body.access_token);
+});
+
+Cypress.Commands.add('statusCode200', (alias) => {
+	cy.wait(alias).its('response.statusCode').should('eq', 200);
+});

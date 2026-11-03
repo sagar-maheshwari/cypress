@@ -1,10 +1,9 @@
-# Dependency directories
-node_modules/
-
-# Optional npm cache directory
-.npm
-
-# Cypress reports/screenshots/videos
-cypress/screenshots
-cypress/videos
-cypress/reports/*
+test-results
+runner-results
+node_modules
+cypress.env.json
+cypress/downloads
+.vscode
+.husky/_
+.idea
+.playwright-mcp
