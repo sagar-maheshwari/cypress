@@ -6,7 +6,7 @@ on:
       buildParameters:
         description: 'Command to run'
         required: false
-        default: 'npm run smoke'
+        default: 'npm run test'
   pull_request:
 
 jobs:
@@ -18,7 +18,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 26
           cache: npm
 
       - name: Install dependencies

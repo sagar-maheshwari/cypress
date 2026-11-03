@@ -1,4 +1,4 @@
-@ui @003
+@ui
 Feature: Admin users
   Background:
     Given I am logged in as the admin user

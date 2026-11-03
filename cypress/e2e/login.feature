@@ -1,4 +1,4 @@
-@ui @001
+@ui
 Feature: Login
   Background:
     Given I am on the login page

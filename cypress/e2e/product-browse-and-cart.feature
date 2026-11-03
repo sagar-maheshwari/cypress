@@ -1,4 +1,4 @@
-@ui @002
+@ui
 Feature: Product browse, search and cart
   Background:
     Given I am on the home page

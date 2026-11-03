@@ -1,4 +1,4 @@
-@api @004
+@api
 Feature: POST /users/login and GET /users/me
 
   @smoke

@@ -1,4 +1,4 @@
-@api @005
+@api
 Feature: GET /products
 
   @smoke
