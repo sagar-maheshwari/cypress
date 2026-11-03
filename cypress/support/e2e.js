@@ -1,5 +1,3 @@
-import './commands';
-
 Cypress.on('uncaught:exception', () => false);
 
 // Hide fetch/XHR requests
@@ -10,3 +8,11 @@ if (!app.document.head.querySelector('[data-hide-command-log-request]')) {
 	style.setAttribute('data-hide-command-log-request', '');
 	app.document.head.appendChild(style);
 }
+
+// The site loads ad and consent scripts that overlay the page and block clicks
+beforeEach(() => {
+	cy.intercept(/googlesyndication|doubleclick|googletagservices|fundingchoices|google-analytics/, {
+		statusCode: 204,
+		body: '',
+	});
+});

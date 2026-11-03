@@ -1,5 +1,10 @@
-import { Given } from '@badeball/cypress-cucumber-preprocessor';
+import { Given, After } from '@badeball/cypress-cucumber-preprocessor';
+import { create, remove } from '../account';
 
-Given('I am logged in as the admin user', () => {
-	cy.loginWithAdmin();
+Given('a registered user exists', () => {
+	create();
+});
+
+After(() => {
+	remove();
 });

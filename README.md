@@ -1,9 +1,9 @@
-# Practice Software Testing - Cypress + Cucumber automation
+# Automation Exercise - Cypress + Cucumber automation
 
-Cypress + Cucumber tests for https://practicesoftwaretesting.com/ (UI) and its API.
+Cypress + Cucumber tests for https://automationexercise.com/ (UI) and its API.
 
 ## Getting started
-Requires Node 22 or later.
+Requires Node 26 or later.
 
 ```
 npm install
@@ -25,7 +25,7 @@ The Cucumber HTML report is written to `test-results/cucumber/cucumber_report.ht
 Features in `cypress/e2e`, steps in `cypress/support/step_definitions`, page objects in `cypress/support/page_objects`. See `CLAUDE.md` for conventions.
 
 ## CI
-- GitHub Actions: `.github/workflows/smoke.yml` runs `npm run smoke` on `ubuntu-latest` (Node 22, headless Electron) for pull requests and manual runs. Use "Run workflow" to pass a different command, e.g. `npm test`. The Cucumber report and failure screenshots are uploaded as artifacts.
+- GitHub Actions: `.github/workflows/smoke.yml` runs `npm run smoke` on `ubuntu-latest` (Node 26, headless Chrome) for pull requests and manual runs. Use "Run workflow" to pass a different command, e.g. `npm test`. The Cucumber report and failure screenshots are uploaded as artifacts.
 
 ## Troubleshooting
 | Symptom | Fix |

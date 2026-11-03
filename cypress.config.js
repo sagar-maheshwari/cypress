@@ -34,7 +34,7 @@ async function setupNodeEvents(on, config) {
 module.exports = defineConfig({
 	defaultCommandTimeout: 10000,
 	requestTimeout: 5000,
-	responseTimeout: 10000,
+	responseTimeout: 15000,
 	pageLoadTimeout: 20000,
 	numTestsKeptInMemory: 1,
 	screenshotsFolder: 'test-results/screenshots',
@@ -48,7 +48,7 @@ module.exports = defineConfig({
 	retries: { runMode: 1, openMode: 0 },
 	e2e: {
 		setupNodeEvents,
-		baseUrl: 'https://practicesoftwaretesting.com',
+		baseUrl: 'https://automationexercise.com',
 		specPattern: '**/*.feature',
 	},
 });

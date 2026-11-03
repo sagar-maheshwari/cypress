@@ -6,7 +6,7 @@ on:
       buildParameters:
         description: 'Command to run'
         required: false
-        default: 'npm run test'
+        default: 'npm run smoke'
   pull_request:
 
 jobs:

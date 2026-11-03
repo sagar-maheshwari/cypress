@@ -1,80 +1,73 @@
-import { Given, When, Then } from '@badeball/cypress-cucumber-preprocessor';
+import { When, Then } from '@badeball/cypress-cucumber-preprocessor';
 import constants from '../constants';
+import { account, buildUser, parse } from '../account';
 
-let response;
-let token;
-let firstProduct;
+let body;
 
-const authHeader = () => ({ Authorization: `Bearer ${token}` });
-
-Given('I have an admin API token', () => {
-	cy.getAdminToken().then((value) => {
-		token = value;
-	});
-});
-
-When('I send a POST request to {string} with email {string} and password {string}', (path, email, password) => {
+const send = (method, path, params) => {
 	cy.request({
-		method: 'POST',
+		method,
 		url: `${constants.API_ROOT}${path}`,
-		body: { email, password },
+		form: method === 'POST',
+		qs: method === 'GET' ? params : undefined,
+		body: method === 'POST' ? params : undefined,
 		failOnStatusCode: false,
 	}).then((resp) => {
-		response = resp;
+		body = parse(resp);
 	});
-});
+};
 
 When('I send a GET request to {string}', (path) => {
-	cy.request({ url: `${constants.API_ROOT}${path}`, failOnStatusCode: false }).then((resp) => {
-		response = resp;
+	send('GET', path);
+});
+
+When('I send a POST request to {string}', (path) => {
+	send('POST', path);
+});
+
+When('I send a POST request to {string} with {string} {string}', (path, name, value) => {
+	send('POST', path, { [name]: value });
+});
+
+When('I create a new account through the API', () => {
+	const user = buildUser();
+	cy.request({ method: 'POST', url: `${constants.API_ROOT}/createAccount`, form: true, body: user }).then((resp) => {
+		body = parse(resp);
+		account.current = user;
 	});
 });
 
-When('I send a GET request to {string} with the admin token', (path) => {
-	cy.request({ url: `${constants.API_ROOT}${path}`, headers: authHeader(), failOnStatusCode: false }).then((resp) => {
-		response = resp;
-	});
+When('I verify the login of the registered user', () => {
+	send('POST', '/verifyLogin', { email: account.current.email, password: account.current.password });
 });
 
-When('I fetch the first product from the product list', () => {
-	cy.request(constants.API.PRODUCTS).then((resp) => {
-		firstProduct = resp.body.data[0];
-	});
+When('I verify the login with email {string} and password {string}', (email, password) => {
+	send('POST', '/verifyLogin', { email, password });
 });
 
-When('I send a GET request for that product', () => {
-	cy.request({ url: `${constants.API.PRODUCTS}/${firstProduct.id}`, failOnStatusCode: false }).then((resp) => {
-		response = resp;
-	});
+When('I get the user details of the registered user', () => {
+	send('GET', '/getUserDetailByEmail', { email: account.current.email });
 });
 
-Then('the response status is {int}', (status) => {
-	expect(response.status).to.eq(status);
+Then('the API response code is {int}', (code) => {
+	expect(body.responseCode).to.eq(code);
 });
 
-Then('the response property {string} is {string}', (property, value) => {
-	expect(String(response.body[property])).to.eq(value);
+Then('the API response message is {string}', (message) => {
+	expect(body.message).to.eq(message);
 });
 
-Then('the response has an access token', () => {
-	expect(response.body.access_token, 'token is returned').to.be.a('string').and.not.be.empty;
+Then('the API response has a non-empty {string} list', (property) => {
+	expect(body[property]).to.be.an('array').and.not.be.empty;
 });
 
-Then('the response data is a non-empty list', () => {
-	expect(response.body.data).to.be.an('array').and.not.be.empty;
-});
-
-Then('the response page number is {int}', (page) => {
-	expect(response.body.current_page).to.eq(page);
-});
-
-Then('every product in the response has a name containing {string}', (term) => {
-	response.body.data.forEach((product) => {
+Then('every product in the API response has a name containing {string}', (term) => {
+	body.products.forEach((product) => {
 		expect(product.name.toLowerCase()).to.contain(term.toLowerCase());
 	});
 });
 
-Then('the response matches that product', () => {
-	expect(response.body.id).to.eq(firstProduct.id);
-	expect(response.body.name).to.eq(firstProduct.name);
+Then('the API user detail email matches the registered user', () => {
+	expect(body.user.email).to.eq(account.current.email);
+	expect(body.user.name).to.eq(account.current.name);
 });
