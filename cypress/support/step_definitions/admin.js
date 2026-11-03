@@ -2,7 +2,7 @@ import { When, Then } from '@badeball/cypress-cucumber-preprocessor';
 import adminPage from '../page_objects/admin.page';
 
 When('I navigate to the admin users page', () => {
-	cy.visit('/admin/users');
+	cy.visit('/admin/users', { failOnStatusCode: false });
 });
 
 Then('I see the users list', () => {

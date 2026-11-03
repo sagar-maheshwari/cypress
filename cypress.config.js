@@ -36,7 +36,6 @@ module.exports = defineConfig({
 	requestTimeout: 5000,
 	responseTimeout: 10000,
 	pageLoadTimeout: 20000,
-	failOnStatusCode: false,
 	numTestsKeptInMemory: 1,
 	screenshotsFolder: 'test-results/screenshots',
 	videosFolder: 'test-results/videos',

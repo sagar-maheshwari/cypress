@@ -5,7 +5,7 @@ import constants from '../constants';
 Given('I am on the home page', () => {
 	// The site loads products with a non-GET method, so match any method
 	cy.intercept(constants.API.PRODUCTS).as('PRODUCTS');
-	cy.visit('/');
+	cy.visit('/', { failOnStatusCode: false });
 	cy.wait('@PRODUCTS').its('response.statusCode').should('eq', 200);
 });
 
